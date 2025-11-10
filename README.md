@@ -1,113 +1,79 @@
-📊 Dashboard com Streamlit e Docker
+📊 Example 01 — Dashboard de Vendas com Streamlit e Docker
+🧩 Descrição
 
-Este projeto é um dashboard interativo feito em Python + Streamlit, empacotado em um container Docker.
-O app exibe análises visuais e atualiza automaticamente sempre que o código for salvo localmente.
+Este projeto apresenta um dashboard interativo desenvolvido em Python com Streamlit, que exibe dados simulados de vendas e gera gráficos dinâmicos.
+O aplicativo foi containerizado com Docker, permitindo execução simples e consistente em qualquer ambiente.
 
-🚀 Tecnologias utilizadas
+🚀 Tecnologias Utilizadas
 
-🐍 Python 3.12
+🐍 Python 3.11+
 
 📊 Streamlit
 
-🐋 Docker
+🧮 Pandas
 
-📦 Pandas / Plotly Express
+📈 Matplotlib
 
-📂 Estrutura do projeto
+🐳 Docker
+
+📁 Estrutura de Pastas
 example_01/
+│
 ├── app.py               # Código principal do dashboard
 ├── requirements.txt     # Dependências Python
-└── Dockerfile           # Configuração da imagem Docker
+├── Dockerfile           # Configuração da imagem Docker
+└── README.md            # (Este arquivo)
 
-⚙️ Pré-requisitos
+⚙️ Como Executar Localmente (sem Docker)
 
-Antes de começar, instale:
+Crie e ative um ambiente virtual (opcional):
 
-Docker Desktop
-
-(Opcional) VS Code
- com a extensão Docker e Python
-
-🧱 1️⃣ Build da imagem
-
-Abra o terminal na pasta do projeto:
-
-cd C:\Users\2402431\Desktop\example_01
+python -m venv venv
+venv\Scripts\activate  # No Windows
 
 
-E construa a imagem com:
+Instale as dependências:
 
-docker build -t meu-dashboard:1.0 .
-
-▶️ 2️⃣ Executar o container
-✅ Modo normal (rodar apenas)
-
-Roda o dashboard normalmente:
-
-docker run -d -p 8501:8501 --name dashboard meu-dashboard:1.0
+pip install -r requirements.txt
 
 
-Acesse em: http://localhost:8501
+Execute o Streamlit:
 
-🔁 Modo desenvolvimento (auto reload a cada Ctrl+S)
-
-Para atualizar automaticamente o app ao salvar o arquivo:
-
-docker run --rm -p 8501:8501 ^
-  -v "C:\Users\2402431\Desktop\example_01:/app" ^
-  meu-dashboard:1.0 ^
-  streamlit run app.py --server.address=0.0.0.0 --server.port=8501 --server.runOnSave true
+streamlit run app.py
 
 
-💡 Isso faz o container:
-
-Montar o diretório local /app (permitindo salvar alterações)
-
-Recarregar automaticamente o Streamlit (--server.runOnSave true)
-
-Encerrar sozinho ao fechar o terminal (--rm)
-
-🧰 3️⃣ Parar ou remover o container
-
-Se você rodou no modo normal (-d), pare o container:
-
-docker stop dashboard
-
-
-E se quiser removê-lo:
-
-docker rm dashboard
-
-🧩 4️⃣ Exemplo do Dockerfile
-# Dockerfile
-FROM python:3.12-slim
-
-WORKDIR /app
-
-# Instalar dependências
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copiar código
-COPY . .
-
-# Expor porta para o Streamlit
-EXPOSE 8501
-
-# Comando padrão
-CMD ["streamlit", "run", "app.py", "--server.address=0.0.0.0"]
-
-🧾 5️⃣ Exemplo do requirements.txt
-streamlit
-pandas
-plotly
-requests
-
-🌐 Acesso
-
-Abra o navegador em:
-
+Abra no navegador:
 👉 http://localhost:8501
+
+🐳 Como Rodar com Docker
+🧱 1. Build da imagem
+
+No diretório example_01, execute:
+
+docker build -t exemplo01:1.0 .
+
+▶️ 2. Rodar o container
+docker run --rm -p 8501:8501 exemplo01:1.0
+
+
+💡 O Streamlit ficará acessível em:
+👉 http://localhost:8501
+
+🔁 Atualização Automática (modo desenvolvimento)
+
+Se quiser que o dashboard atualize automaticamente ao salvar mudanças no app.py, use este comando:
+
+docker run --rm -p 8501:8501 -v "%cd%:/app" python:3.11-slim bash -c "pip install -r /app/requirements.txt && streamlit run /app/app.py --server.address=0.0.0.0 --server.port=8501 --server.runOnSave true"
+
+🎨 Visual
+
+O dashboard exibe:
+
+Dados de vendas por mês
+
+Gráficos de tendência
+
+Métricas automáticas (total, média, crescimento)
 
 # ---------EXEMPLO 04 -----------------
 
